@@ -2,12 +2,6 @@
 Para construir uma calculadora científica, você pode implementar as seguintes funcionalidades:
 
 ### Funcionalidades Básicas:
-3. **Funções Exponenciais e Logarítmicas**:
-   - Exponenciação (`x^y`)
-   - Raiz quadrada (`sqrt(x)`)
-   - Logaritmo natural (`ln(x)`)
-   - Logaritmo de base 10 (`log(x)`)
-
 4. **Funções Matemáticas Adicionais**:
    - Fatorial (`x!`)
    - Valor absoluto (`abs(x)`)
@@ -64,7 +58,7 @@ import os
 
 # METHODS
 
-def counter():
+def counter() -> None:
     global count
     print(count)
     if count == 2:
@@ -78,11 +72,17 @@ def fat(n: int):
         fat_n = fat_n * (fat_n - i)
     return fat_n
 
-def comb(n_1, n_2):
+def comb(n_1: int, n_2: int) -> float:
     return fat(n_1) / (fat(n_2) * (fat(n_1 - n_2)))
 
-def perm(n_1, n_2):
+def perm(n_1: int, n_2: int) -> float:
     return fat(n_1) / fat(n_1 - n_2)
+
+def rec(r: float | int, teta: float | int) -> tuple[float, float]:
+    return ((r / math.cos(teta)), (r / math.sen(teta)))
+
+def pol(x: float | int, y: float | int) -> tuple[float, float]:
+    return (math.sqrt(x**2 + y**2), math.atan(y / x))
 
 # CLASS
 
@@ -91,6 +91,9 @@ class Sci_Cal:
     mod = ''  # Depois tenho que ver o que cada modo faz e ajustar o código
 
     last_result = None
+
+    coord_1 = None
+    coord_2 = None
 
     A = None
     B = None
@@ -128,6 +131,7 @@ class Sci_Cal:
                     counter()
                     x = int(input(f"Select calculator mode: {modes[count]}"))
                 Sci_Cal.mod = modes[count][x]
+            print(f"Mode selected: {Sci_Cal.mod}")
         except Exception:
             print(Exception)
     
@@ -157,8 +161,15 @@ class Sci_Cal:
         except Exception:
             print(Exception)
     
-    def pol_rec():
-        ''
+    def pol_rec(x: float | int, y: float | int) -> None:
+        try:
+            if Sci_Cal.shift:
+                Sci_Cal.coord_1, Sci_Cal.coord_2 = rec(x, y)
+            else:
+                Sci_Cal.coord_1, Sci_Cal.coord_2 = pol(x, y)
+            print((Sci_Cal.coord_1, Sci_Cal.coord_2))
+        except Exception:
+            print(Exception)
 
     def sum_n(n_1: float | int, *n_2: float | int) -> float:
         try:
