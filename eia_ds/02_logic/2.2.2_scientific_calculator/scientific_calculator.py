@@ -55,6 +55,7 @@ count = -1
 
 import math
 import os
+from fractions import Fraction
 
 # METHODS
 
@@ -90,10 +91,16 @@ class Sci_Cal:
 
     mod = ''  # Depois tenho que ver o que cada modo faz e ajustar o código
 
+    fracao_mod = 'd/c'
+
     last_result = None
 
     coord_1 = None
     coord_2 = None
+
+    angle_d = None
+    angle_m = None
+    angle_s = None
 
     A = None
     B = None
@@ -168,6 +175,41 @@ class Sci_Cal:
             else:
                 Sci_Cal.coord_1, Sci_Cal.coord_2 = pol(x, y)
             print((Sci_Cal.coord_1, Sci_Cal.coord_2))
+        except Exception:
+            print(Exception)
+    
+    def cub_n(*val: float | int) -> float:
+        try:
+            if val:
+                if Sci_Cal.shift:
+                    Sci_Cal.last_result = math.pow(val, 1/3)
+                else:
+                    Sci_Cal.last_result = math.pow(val, 3)
+            else:
+                if Sci_Cal.shift:
+                    Sci_Cal.last_result = math.pow(Sci_Cal.last_result, 1/3)
+                else:
+                    Sci_Cal.last_result = math.pow(Sci_Cal.last_result, 3)
+            return Sci_Cal.last_result
+        except Exception:
+            print(Exception)
+
+    def fracao_m_d(n_1: float | int, *n_2: float | int) -> float:
+        try:
+            if Sci_Cal.shift:
+                Sci_Cal.fracao_mod = 'd/c'
+            else:
+                Sci_Cal.fracao_mod = 'a_b/c'
+            if n_2:
+                Sci_Cal.last_result = n_1 / n_2
+            else:
+                Sci_Cal.last_result = Sci_Cal.last_result / n_1
+            if Sci_Cal.fracao_mod == 'a_b/c':
+                int_result = Sci_Cal.last_result // 1
+                rac_result = Sci_Cal.last_result - int_result
+                frac = Fraction(rac_result)
+                print(f"{int_result}+{frac}")
+            return Sci_Cal.last_result
         except Exception:
             print(Exception)
 
@@ -348,5 +390,37 @@ class Sci_Cal:
             return Sci_Cal.last_result
         except Exception:
             print(Exception)
+    
+    def raiz_quadrada(*val: float | int) -> float:
+        try:
+            if val:
+                Sci_Cal.last_result = math.sqrt(val)
+            else:
+                Sci_Cal.last_result = math.sqrt(Sci_Cal.last_result)
+            return Sci_Cal.last_result
+        except Exception:
+            print(Exception)
 
+    def negative(*val: float | int) -> float:
+        try:
+            if val:
+                if Sci_Cal.alpha:
+                    Sci_Cal.A = val
+                    return Sci_Cal.A
+                else:
+                    Sci_Cal.last_result = - val
+            else:
+                if Sci_Cal.alpha:
+                    Sci_Cal.A = Sci_Cal.last_result
+                    return Sci_Cal.A
+                else:
+                    Sci_Cal.last_result = - Sci_Cal.last_result
+            return Sci_Cal.last_result
+        except Exception:
+            print(Exception)
 
+    def degrees(val) -> float:
+        try:
+            ''
+        except Exception:
+            print(Exception)
