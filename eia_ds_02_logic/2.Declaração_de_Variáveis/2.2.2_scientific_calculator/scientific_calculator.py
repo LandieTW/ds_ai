@@ -47,13 +47,48 @@ Para construir uma calculadora científica, você pode implementar as seguintes 
 Essa lista pode ser adaptada conforme você queira expandir ou simplificar a calculadora. Para começar, seria interessante implementar as funções mais básicas e ir incrementando aos poucos.
 """
 
+# CONSTANTS
+
+modes = (
+    {1: 'COMP', 2: 'SD', 3: 'REG'},
+    {1: 'Deg', 2: 'Rad', 3: 'Gra'},
+    {1: 'Fix', 2: 'Sci', 3: 'Norm'},
+    'Disp'
+)
+count = -1
+
 # LIBS
 
 import math
+import os
+
+# METHODS
+
+def counter():
+    global count
+    print(count)
+    if count == 2:
+        count = -1
+    else:
+        count += 1
+
+def fat(n: int):
+    fat_n = 1
+    for i in range(n):
+        fat_n = fat_n * (fat_n - i)
+    return fat_n
+
+def comb(n_1, n_2):
+    return fat(n_1) / (fat(n_2) * (fat(n_1 - n_2)))
+
+def perm(n_1, n_2):
+    return fat(n_1) / fat(n_1 - n_2)
 
 # CLASS
 
 class Sci_Cal:
+
+    mod = ''  # Depois tenho que ver o que cada modo faz e ajustar o código
 
     last_result = None
 
@@ -70,20 +105,60 @@ class Sci_Cal:
     def __init__(self):
         pass
 
-    def reset(self):
-        self.last_result = None
-
-    def shift_button(self):
-        if self.shift:
-            self.shift = False
+    def shift_button():
+        if Sci_Cal.shift:
+            Sci_Cal.shift = False
         else:
-            self.shift = True
+            Sci_Cal.shift = True
     
-    def alpha_button(self):
-        if self.alpha:
-            self.alpha = False
+    def alpha_button():
+        if Sci_Cal.alpha:
+            Sci_Cal.alpha = False
         else:
-            self.alpha = True
+            Sci_Cal.alpha = True
+
+    def mode():
+        try:
+            if Sci_Cal.alpha:
+                os.system('clear')
+                Sci_Cal.last_result = None
+            else:
+                x = ''
+                while x == '':
+                    counter()
+                    x = int(input(f"Select calculator mode: {modes[count]}"))
+                Sci_Cal.mod = modes[count][x]
+        except Exception:
+            print(Exception)
+    
+    def fat_n(*val: int) -> float:
+        try:
+            if val:
+                if Sci_Cal.shift:
+                    Sci_Cal.last_result = fat(val)
+                else:
+                    Sci_Cal.last_result = 1 / val
+            else:
+                if Sci_Cal.shift:
+                    Sci_Cal.last_result = fat(Sci_Cal.last_result)
+                else:
+                    Sci_Cal.last_result = 1 / Sci_Cal.last_result
+            return Sci_Cal.last_result
+        except Exception:
+            print(Exception)
+    
+    def comb_perm(n_1: int, n_2: int) -> float:
+        try:
+            if Sci_Cal.shift:
+                Sci_Cal.last_result = perm(n_1, n_2)
+            else:
+                Sci_Cal.last_result = comb(n_1, n_2)
+            return Sci_Cal.last_result
+        except Exception:
+            print(Exception)
+    
+    def pol_rec():
+        ''
 
     def sum_n(n_1: float | int, *n_2: float | int) -> float:
         try:
@@ -262,4 +337,5 @@ class Sci_Cal:
             return Sci_Cal.last_result
         except Exception:
             print(Exception)
+
 
