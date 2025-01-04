@@ -47,9 +47,9 @@ modes = (
     {1: 'COMP', 2: 'SD', 3: 'REG'},
     {1: 'Deg', 2: 'Rad', 3: 'Gra'},
     {1: 'Fix', 2: 'Sci', 3: 'Norm'},
-    'Disp'
+    {1: 'Disp'}
 )
-count = -1
+count = 0
 
 # LIBS
 
@@ -59,11 +59,10 @@ from fractions import Fraction
 
 # METHODS
 
-def counter() -> None:
-    global count
-    print(count)
+def counter(count: int) -> None:
+    global count_modes
     if count == 2:
-        count = -1
+        count = 0
     else:
         count += 1
 
@@ -128,6 +127,7 @@ class Sci_Cal:
             Sci_Cal.alpha = True
 
     def mode():
+        global count
         try:
             if Sci_Cal.alpha:
                 os.system('clear')
@@ -135,9 +135,11 @@ class Sci_Cal:
             else:
                 x = ''
                 while x == '':
-                    counter()
                     x = int(input(f"Select calculator mode: {modes[count]}"))
+                    if x == '':
+                        counter(count)
                 Sci_Cal.mod = modes[count][x]
+                count = 0
             print(f"Mode selected: {Sci_Cal.mod}")
         except Exception:
             print(Exception)
